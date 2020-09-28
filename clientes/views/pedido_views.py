@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.views.decorators.cache import cache_page
+
 from ..forms import pedido_forms
 from ..entidades import pedido
 from ..services import pedido_service
@@ -21,6 +23,7 @@ def inserir_pedido(request):
         form_pedido = pedido_forms.PedidoForm()
     return render(request, 'pedidos/form_pedido.html', {'form_pedido': form_pedido})
 
+@cache_page(60)
 def listar_pedidos(request):
     pedidos = pedido_service.listar_pedidos()
     return render(request, 'pedidos/lista_pedidos.html', {'pedidos': pedidos})
